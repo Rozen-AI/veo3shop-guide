@@ -2,9 +2,16 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <script>
+        if (window.location.protocol !== 'file:') {
+            var _b = document.createElement('base');
+            _b.href = '/';
+            document.head.appendChild(_b);
+        }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Veo3 Shop — Документация</title>
-    <meta name="description" content="Полное руководство по настройке Google AI PRO: прокси, вход в аккаунт, Antigravity, безопасность и возможности подписки.">
+    <meta name="description" content="Официальная документация Veo3 Shop: Google AI Pro (Gemini), ChatGPT, Claude AI (API), CapCut Pro и настройка прокси.">
     <link rel="icon" type="image/png" href="images/favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -988,6 +995,209 @@
             object-fit: contain;
         }
         .lightbox.active img { transform: scale(1); }
+
+        /* ═══════════════════════════════════════════
+           MULTI-SERVICE SWITCHER & PANELS (v5)
+           ═══════════════════════════════════════════ */
+        .service-switcher-wrap {
+            position: sticky;
+            top: 0;
+            z-index: 60;
+            background: rgba(6, 10, 20, 0.84);
+            backdrop-filter: blur(22px) saturate(1.4);
+            -webkit-backdrop-filter: blur(22px) saturate(1.4);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 28px;
+        }
+        .service-switcher {
+            max-width: 820px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .svc-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 15px;
+            border-radius: 999px;
+            border: 1px solid var(--border-light);
+            background: rgba(22, 30, 54, 0.72);
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s var(--ease);
+            white-space: nowrap;
+        }
+        .svc-pill:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.24);
+            background: rgba(30, 41, 74, 0.9);
+            transform: translateY(-1px);
+        }
+        .svc-pill .svc-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .svc-pill[data-service="google"] .svc-dot { background: #4a8eff; box-shadow: 0 0 10px #4a8eff; }
+        .svc-pill[data-service="chatgpt"] .svc-dot { background: #34d399; box-shadow: 0 0 10px #34d399; }
+        .svc-pill[data-service="claude"] .svc-dot { background: #f97316; box-shadow: 0 0 10px #f97316; }
+        .svc-pill[data-service="capcut"] .svc-dot { background: #22d3ee; box-shadow: 0 0 10px #22d3ee; }
+
+        .svc-pill.active {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.32);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+        }
+        .svc-pill.active[data-service="google"] {
+            background: linear-gradient(135deg, rgba(74,142,255,0.28), rgba(139,92,246,0.28));
+            border-color: rgba(74, 142, 255, 0.6);
+        }
+        .svc-pill.active[data-service="chatgpt"] {
+            background: linear-gradient(135deg, rgba(16,185,129,0.28), rgba(34,211,238,0.2));
+            border-color: rgba(52, 211, 153, 0.6);
+        }
+        .svc-pill.active[data-service="claude"] {
+            background: linear-gradient(135deg, rgba(249,115,22,0.28), rgba(232,178,72,0.22));
+            border-color: rgba(249, 115, 22, 0.6);
+        }
+        .svc-pill.active[data-service="capcut"] {
+            background: linear-gradient(135deg, rgba(34,211,238,0.28), rgba(74,142,255,0.22));
+            border-color: rgba(34, 211, 238, 0.6);
+        }
+
+        .service-nav { display: none; }
+        .service-nav.active { display: block; }
+        .service-panel { display: none; }
+        .service-panel.active { display: block; animation: svcFadeIn 0.25s var(--ease); }
+        @keyframes svcFadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .doc-shot {
+            display: block;
+            width: 100%;
+            max-width: 560px;
+            margin-top: 12px;
+            margin-bottom: 6px;
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+            cursor: zoom-in;
+            transition: transform 0.2s var(--ease), border-color 0.2s var(--ease);
+        }
+        .doc-shot:hover {
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: scale(1.006);
+        }
+        .doc-shot-narrow { max-width: 420px; }
+
+        /* Clean structured code box with dedicated header bar (fixes button overlap) */
+        .code-box {
+            background: rgba(8, 12, 26, 0.94);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            margin: 12px 0 18px;
+            overflow: hidden;
+        }
+        .code-box-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 8px 14px;
+            background: rgba(255, 255, 255, 0.035);
+            border-bottom: 1px solid var(--border);
+        }
+        .code-box-lang {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .code-box pre {
+            margin: 0;
+            padding: 14px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12.5px;
+            line-height: 1.65;
+            color: #d7e3ff;
+            white-space: pre-wrap;
+            word-break: break-all;
+            overflow-x: auto;
+        }
+        .copy-code-btn {
+            padding: 5px 12px;
+            border-radius: 7px;
+            border: 1px solid rgba(255,255,255,0.16);
+            background: rgba(255,255,255,0.07);
+            color: #e4e8f4;
+            font-family: 'Inter', sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+        .copy-code-btn:hover { background: rgba(74, 142, 255, 0.35); border-color: rgba(74, 142, 255, 0.65); color: #fff; }
+
+        .jump-proxy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(34, 211, 238, 0.45);
+            background: rgba(34, 211, 238, 0.12);
+            color: #7eeeff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.18s;
+        }
+        .jump-proxy-btn:hover {
+            background: rgba(34, 211, 238, 0.24);
+            color: #fff;
+        }
+
+        .sb-emerald { background: rgba(52, 211, 153, 0.12); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.28); }
+        .sb-orange { background: rgba(249, 115, 22, 0.12); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.3); }
+
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin: 14px 0 18px;
+        }
+        .model-card {
+            background: rgba(22, 30, 54, 0.65);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+        .model-card strong { display: block; color: #fff; font-size: 14px; margin-bottom: 4px; }
+        .model-card code { font-size: 12px; color: #fb923c; }
+        .model-card p { font-size: 13px; color: var(--text-secondary); margin-top: 6px; line-height: 1.5; }
+
+        @media (max-width: 768px) {
+            .service-switcher-wrap {
+                padding: 12px 14px 12px 62px;
+            }
+            .svc-pill {
+                padding: 7px 11px;
+                font-size: 12px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -1050,6 +1260,9 @@
         <div class="sidebar-label">Инструкции</div>
 
         <nav class="sidebar-nav">
+            <!-- ═══ NAV: GOOGLE AI PRO ═══ -->
+            <div class="service-nav active" data-service-nav="google">
+
             <!-- Шаг 1 -->
             <div class="nav-group open">
                 <button class="nav-group-toggle" onclick="toggleNavGroup(this)">
@@ -1139,6 +1352,79 @@
                     <a href="#faq" class="nav-link">FAQ</a>
                 </div>
             </div>
+                    </div>
+
+            <!-- ═══ NAV: CHATGPT ═══ -->
+            <div class="service-nav" data-service-nav="chatgpt">
+                <div class="nav-group open">
+                    <button class="nav-group-toggle" onclick="toggleNavGroup(this)">
+                        <span class="nav-icon-wrap"><svg viewBox="0 0 24 24"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg></span>
+                        ChatGPT Plus • Вход
+                        <span class="nav-group-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+                    </button>
+                    <div class="nav-group-items">
+                        <a href="#gpt-start" class="nav-link active">Начало и VPN / Прокси</a>
+                        <a href="#gpt-login" class="nav-link">Вход в аккаунт</a>
+                        <a href="#gpt-2fa" class="nav-link">Генерация кода 2FA</a>
+                    </div>
+                </div>
+                <div class="nav-divider"></div>
+                <div class="nav-group open">
+                    <button class="nav-group-toggle" onclick="toggleNavGroup(this)">
+                        <span class="nav-icon-wrap"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+                        Кредиты и Правила
+                        <span class="nav-group-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+                    </button>
+                    <div class="nav-group-items">
+                        <a href="#gpt-codex" class="nav-link">1650 кредитов</a>
+                        <a href="#gpt-faq" class="nav-link">Правила и FAQ</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ NAV: CLAUDE AI API ═══ -->
+            <div class="service-nav" data-service-nav="claude">
+                <div class="nav-group open">
+                    <button class="nav-group-toggle" onclick="toggleNavGroup(this)">
+                        <span class="nav-icon-wrap"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span>
+                        Активация ключа
+                        <span class="nav-group-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+                    </button>
+                    <div class="nav-group-items">
+                        <a href="#claude-start" class="nav-link active">Зачем нужен API-ключ</a>
+                        <a href="#claude-activate" class="nav-link">Активация баланса</a>
+                    </div>
+                </div>
+                <div class="nav-divider"></div>
+                <div class="nav-group open">
+                    <button class="nav-group-toggle" onclick="toggleNavGroup(this)">
+                        <span class="nav-icon-wrap"><svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></span>
+                        Подключение и баланс
+                        <span class="nav-group-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+                    </button>
+                    <div class="nav-group-items">
+                        <a href="#claude-code" class="nav-link">Claude Code, Cursor и VS Code</a>
+                        <a href="#claude-balance" class="nav-link">Баланс, канал и FAQ</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ NAV: CAPCUT PRO ═══ -->
+            <div class="service-nav" data-service-nav="capcut">
+                <div class="nav-group open">
+                    <button class="nav-group-toggle" onclick="toggleNavGroup(this)">
+                        <span class="nav-icon-wrap"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span>
+                        CapCut Pro • Настройка
+                        <span class="nav-group-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span>
+                    </button>
+                    <div class="nav-group-items">
+                        <a href="#capcut-start" class="nav-link active">Начало и VPN / Прокси</a>
+                        <a href="#capcut-login" class="nav-link">Вход в аккаунт</a>
+                        <a href="#capcut-outlook" class="nav-link">Вход в почту Outlook</a>
+                        <a href="#capcut-tips" class="nav-link">650 AI-кредитов и FAQ</a>
+                    </div>
+                </div>
+            </div>
         </nav>
 
         <div class="sidebar-support">
@@ -1150,7 +1436,25 @@
     </aside>
 
     <!-- ═══════ MAIN CONTENT ═══════ -->
-    <main class="content">
+        <main class="content">
+        <div class="service-switcher-wrap">
+            <div class="service-switcher" role="tablist" aria-label="Выбор сервиса">
+                <button type="button" class="svc-pill active" data-service="google" onclick="switchService('google')">
+                    <span class="svc-dot"></span> Google AI Pro
+                </button>
+                <button type="button" class="svc-pill" data-service="chatgpt" onclick="switchService('chatgpt')">
+                    <span class="svc-dot"></span> ChatGPT
+                </button>
+                <button type="button" class="svc-pill" data-service="claude" onclick="switchService('claude')">
+                    <span class="svc-dot"></span> Claude AI (API)
+                </button>
+                <button type="button" class="svc-pill" data-service="capcut" onclick="switchService('capcut')">
+                    <span class="svc-dot"></span> CapCut Pro
+                </button>
+            </div>
+        </div>
+
+        <div class="service-panel active" data-service-panel="google">
         <div class="content-inner">
 
             <!-- ═══ HERO ═══ -->
@@ -2016,10 +2320,535 @@
                 </div>
             </section>
 
+                </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             PANEL 2: CHATGPT (PLUS + 1650 КРЕДИТОВ)
+             ═══════════════════════════════════════════ -->
+        <div class="service-panel" data-service-panel="chatgpt">
+        <div class="content-inner">
+            <div class="hero" id="gpt-start">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    ChatGPT Plus и 1650 кредитов
+                </div>
+                <h1>Вход в ChatGPT<br>и активация кредитов</h1>
+                <p class="hero-description">
+                    Руководство по первому входу в готовый аккаунт <strong>ChatGPT Plus (30 дней)</strong> с 2FA — вход выполняется буквально за 5 шагов, а также инструкция по активации пакета <strong>1 650 кредитов</strong>.
+                </p>
+
+                <div class="quick-nav">
+                    <a href="#gpt-login" class="quick-nav-card">
+                        <div class="quick-nav-icon qni-login">
+                            <svg viewBox="0 0 24 24"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg>
+                        </div>
+                        <div class="quick-nav-text">
+                            <strong>Вход в аккаунт</strong>
+                            <span>Email, пароль и 2FA</span>
+                        </div>
+                    </a>
+                    <a href="#gpt-2fa" class="quick-nav-card">
+                        <div class="quick-nav-icon qni-security">
+                            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <div class="quick-nav-text">
+                            <strong>Код 2FA</strong>
+                            <span>Где получить 6 цифр</span>
+                        </div>
+                    </a>
+                    <a href="#gpt-codex" class="quick-nav-card">
+                        <div class="quick-nav-icon qni-ag">
+                            <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        </div>
+                        <div class="quick-nav-text">
+                            <strong>1650 кредитов</strong>
+                            <span>Активация на аккаунт</span>
+                        </div>
+                    </a>
+                    <a href="#gpt-faq" class="quick-nav-card">
+                        <div class="quick-nav-icon qni-faq">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        </div>
+                        <div class="quick-nav-text">
+                            <strong>Правила и FAQ</strong>
+                            <span>Гарантия и частые вопросы</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="callout callout-info" style="margin-top: 22px;">
+                    <div class="callout-title">Подготовка: VPN или прокси</div>
+                    <p>Сервис <strong>chatgpt.com</strong> не открывается с российских IP-адресов. Перед входом включите либо свой стабильный VPN, либо настройте наши прокси в браузере (Zero Omega) или на телефоне.</p>
+                    <button type="button" class="jump-proxy-btn" onclick="openServiceSection('google', 'proxy-pc')">🌐 Открыть инструкцию по настройке наших прокси →</button>
+                </div>
+            </div>
+
+            <section id="gpt-login">
+                <div class="section-badge sb-emerald">● Вход</div>
+                <div class="section-title">Вход в аккаунт ChatGPT Plus</div>
+                <p class="section-subtitle">После покупки бот пришлёт 3 параметра: <strong>Email</strong>, <strong>Пароль</strong> и секретный ключ <strong>2FA</strong>. Выполните вход по порядку ниже.</p>
+
+                <ol style="margin-top: 18px; display: flex; flex-direction: column; gap: 22px; padding-left: 20px;">
+                    <li>
+                        <strong>Откройте <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" style="color: var(--blue);">chatgpt.com</a> и нажмите <code>Log in</code></strong> в правом верхнем углу.
+                        <img src="images/gpt-login-1.png" alt="ChatGPT: Log in" class="doc-shot">
+                    </li>
+                    <li>
+                        <strong>Введите Email из бота</strong> в поле <em>Email address</em> и нажмите <strong>Continue</strong>. Убедитесь, что при копировании не захватили лишний пробел в конце.
+                        <img src="images/gpt-login-2.png" alt="ChatGPT: Email address" class="doc-shot doc-shot-narrow">
+                    </li>
+                    <li>
+                        <strong>На экране «Check your inbox» НЕ ждите код на почту!</strong> Нажмите кнопку <strong>Continue with password</strong> под полем ввода — вход идёт по паролю и 2FA.
+                        <img src="images/gpt-login-3.png" alt="ChatGPT: Continue with password" class="doc-shot doc-shot-narrow">
+                    </li>
+                    <li>
+                        <strong>Введите Пароль из бота</strong> в поле <em>Password</em> и нажмите <strong>Continue</strong>.
+                        <img src="images/gpt-login-4.png" alt="ChatGPT: Ввод пароля" class="doc-shot doc-shot-narrow">
+                    </li>
+                    <li>
+                        <strong>Введите 6-значный код 2FA</strong> на экране <em>Check your authenticator app</em> и нажмите <strong>Continue</strong>. Как получить 6 цифр из секретного ключа — смотрите в блоке ниже.
+                        <img src="images/gpt-login-5.png" alt="ChatGPT: Ввод 2FA кода" class="doc-shot doc-shot-narrow">
+                    </li>
+                </ol>
+
+                <p style="margin-top: 20px; color: var(--green);">✅ <strong>Готово!</strong> Вы вошли в ChatGPT Plus — в левом нижнем углу под профилем отобразится статус <strong>Plus</strong>.</p>
+            </section>
+
+            <section id="gpt-2fa">
+                <div class="section-badge sb-cyan">● 2FA</div>
+                <div class="section-title">Как получить 6-значный код 2FA</div>
+                <p class="section-subtitle">Из бота приходит секретный 2FA-ключ (набор букв и цифр). Он преобразуется в одноразовый 6-значный код, который обновляется каждые 30 секунд.</p>
+
+                <div class="callout callout-accent" style="margin-top: 16px;">
+                    <div class="callout-title">Быстрый онлайн-конвертер 2FA</div>
+                    <p>Откройте любой из проверенных генераторов — <a href="https://client.2zie.com/2fa/" target="_blank" rel="noopener noreferrer" style="color: var(--blue);"><strong>client.2zie.com/2fa</strong></a> или <a href="https://2fa.cn/" target="_blank" rel="noopener noreferrer" style="color: var(--blue);"><strong>2fa.cn</strong></a> — вставьте свой 2FA-ключ из бота и нажмите «Получить код». Скопируйте свежие 6 цифр и вставьте на странице входа ChatGPT.</p>
+                    <p style="margin-top: 8px; color: var(--text-secondary);">Для удобства на каждый день этот же секретный ключ можно добавить в приложение <strong>Google Authenticator</strong> или <strong>2FAS</strong> на телефоне.</p>
+                </div>
+            </section>
+
+            <section id="gpt-codex">
+                <div class="section-badge sb-orange">● 1650 кредитов</div>
+                <div class="section-title">ChatGPT • 1650 кредитов</div>
+                <p class="section-subtitle">Промо-активация <strong>1 650 рабочих кредитов</strong> непосредственно на ваш аккаунт ChatGPT — тратьте их на Codex, агентный кодинг и любые расширенные рабочие задачи.</p>
+
+                <ol style="margin-top: 16px; padding-left: 20px; display: flex; flex-direction: column; gap: 10px;">
+                    <li>Включите стабильный VPN или наши прокси.</li>
+                    <li>Войдите в тот аккаунт ChatGPT, на который хотите зачислить кредиты (подходит как обычный <strong>Free</strong>, так и аккаунт с активным <strong>Plus</strong>).</li>
+                    <li>Откройте выданную ботом ссылку активации (или примените полученный промокод в окне активации) и подтвердите начисление.</li>
+                    <li>Проверьте баланс кредитов в разделе <strong>Settings → Usage / Billing</strong> — отобразятся начисленные <strong>1 650 кредитов</strong>.</li>
+                </ol>
+
+                <div class="callout callout-info" style="margin-top: 16px;">
+                    <div class="callout-title">Совместимость с готовым ChatGPT Plus на 1 месяц</div>
+                    <p>Промокод на 1 650 кредитов <strong>можно применить поверх ChatGPT Plus</strong> — они отлично сочетаются. Учитывайте лишь срок жизни аккаунта: на личном аккаунте кредиты действуют <strong>30–60 дней</strong>, а на нашем готовом аккаунте ChatGPT Plus — в пределах его 30-дневного срока подписки. Если хотите использовать кредиты максимально долго (до 60 дней), активируйте их на свой личный аккаунт ChatGPT.</p>
+                </div>
+            </section>
+
+            <section id="gpt-faq">
+                <div class="section-badge sb-cyan">● Важно</div>
+                <div class="section-title">Правила, гарантия и частые вопросы</div>
+
+                <div class="callout callout-warning" style="margin-top: 14px; margin-bottom: 18px;">
+                    <div class="callout-title">Главные правила гарантии (30 дней)</div>
+                    <ul style="margin: 8px 0 0 18px; line-height: 1.7;">
+                        <li><strong>НЕ отменяйте подписку вручную</strong> в разделе Billing — самостоятельная отмена аннулирует гарантию.</li>
+                        <li>Гарантия 30 дней покрывает работу самого <strong>ChatGPT Plus</strong> (веб-версия и мобильное приложение). Работа сторонних утилит (<strong>Codex, 9Router</strong> и аналогичных прокладок) в рамках тарифа Plus не гарантируется — для задач с повышенным лимитом берите пакет <strong>1650 кредитов</strong>.</li>
+                        <li>Вы можете сменить 2FA самостоятельно, но поддержка по получению кодов с почты при смене 2FA не оказывается.</li>
+                    </ul>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+                        Можно ли продлить подписку ChatGPT Plus на этом же аккаунте через месяц?
+                        <span class="faq-chevron">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        Нет, готовые аккаунты ChatGPT Plus рассчитаны ровно на <strong>1 месяц (30 дней)</strong> без продления. Через месяц нужно приобрести новый аккаунт в боте. Важные переписки и промпты рекомендуем заранее сохранять себе.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+                        При входе появляется ошибка «Device Limit» — что делать?
+                        <span class="faq-chevron">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        Откройте браузер в режиме <strong>Инкогнито</strong> (или очистите cookies для <code>chatgpt.com</code> и <code>openai.com</code>) и войдите через чистый VPN или наши приватные прокси. Обычно это сразу снимает ограничение устройства.
+                    </div>
+                </div>
+            </section>
+        </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             PANEL 3: CLAUDE AI (API — $100 / $500)
+             ═══════════════════════════════════════════ -->
+        <div class="service-panel" data-service-panel="claude">
+        <div class="content-inner">
+            <div class="hero" id="claude-start">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    Claude AI API • $100 и $500 на 30 дней
+                </div>
+                <h1>Claude AI (API)<br>Активация и подключение</h1>
+                <p class="hero-description">
+                    Руководство по активации баланса, созданию API-ключа и подключению новейших моделей <strong>Claude Opus, Sonnet и Haiku</strong> к <strong>Claude Code, Cursor и VS Code</strong>.
+                </p>
+
+                <div class="quick-nav">
+                    <a href="#claude-activate" class="quick-nav-card">
+                        <div class="quick-nav-icon qni-login">
+                            <svg viewBox="0 0 24 24"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg>
+                        </div>
+                        <div class="quick-nav-text">
+                            <strong>Активация баланса</strong>
+                            <span>Получение ключа на api.mwapi.dev</span>
+                        </div>
+                    </a>
+                    <a href="#claude-code" class="quick-nav-card">
+                        <div class="quick-nav-icon qni-ag">
+                            <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                        </div>
+                        <div class="quick-nav-text">
+                            <strong>Подключение</strong>
+                            <span>Claude Code, Cursor и VS Code</span>
+                        </div>
+                    </a>
+                    <a href="#claude-balance" class="quick-nav-card">
+                        <div class="quick-nav-icon qni-faq">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        </div>
+                        <div class="quick-nav-text">
+                            <strong>Баланс и FAQ</strong>
+                            <span>Экономия и проверка остатка</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="callout callout-accent" style="margin-top: 22px;">
+                    <div class="callout-title">Почему API-ключ надёжнее обычного аккаунта Claude?</div>
+                    <p>Официальный <code>claude.ai</code> сейчас массово блокирует аккаунты по причинам, на которые пользователь почти не может повлиять — от смены IP и привязанной карты до внезапной проверки по паспортным данным. При такой блокировке пропадают и аккаунт, и оплаченная подписка без возврата средств. Формат API-ключа решает эту проблему полностью: вы работаете с моделями Claude через выделенный шлюз и не рискуете потерять доступ и баланс.</p>
+                </div>
+
+                <div class="callout callout-info" style="margin-top: 16px;">
+                    <div class="callout-title">Подготовка: VPN или прокси</div>
+                    <p>Для стабильного доступа к личному кабинету <code>api.mwapi.dev</code>, а также для работы <strong>Claude Code, Cursor и VS Code</strong> из РФ включите либо свой стабильный VPN, либо наши приватные прокси.</p>
+                    <button type="button" class="jump-proxy-btn" onclick="openServiceSection('google', 'proxy-pc')">🌐 Открыть инструкцию по настройке наших прокси →</button>
+                </div>
+            </div>
+
+            <section id="claude-activate">
+                <div class="section-badge sb-orange">● Активация</div>
+                <div class="section-title">Активация кода и создание API-ключа</div>
+                <p class="section-subtitle">После покупки бот пришлёт вам одноразовый код пополнения. Активируйте его в личном кабинете шлюза:</p>
+
+                <ol style="margin-top: 18px; display: flex; flex-direction: column; gap: 22px; padding-left: 20px;">
+                    <li>
+                        <strong>Зарегистрируйтесь на <a href="https://api.mwapi.dev/" target="_blank" rel="noopener noreferrer" style="color: var(--blue);">api.mwapi.dev</a></strong> (обычная почта + пароль, при необходимости включите VPN/прокси).<br>
+                        Если после входа появится старое системное окно <em>[Notice] The "Claude Cheap" group is temporarily paused...</em> — спокойно нажмите оранжевую кнопку <strong>Mark as read</strong>. Это архивное объявление о другом тарифе и к вашему балансу не относится.
+                        <img src="images/claude-notice.jpg" alt="Claude: Notice окно" class="doc-shot doc-shot-narrow">
+                    </li>
+                    <li>
+                        <strong>Пополните баланс:</strong> в левом меню откройте вкладку <strong>Redeem</strong>, вставьте ваш код из бота в поле <em>Enter your redeem code</em> и нажмите <strong>Redeem Code</strong>. На карточке сверху сразу появится <strong>$100.00</strong> (или <strong>$500.00</strong>).
+                        <img src="images/claude-redeem.jpg" alt="Claude: Redeem" class="doc-shot">
+                    </li>
+                    <li>
+                        <strong>Создайте API-ключ:</strong> в левом меню перейдите во вкладку <strong>API Keys</strong> и нажмите зелёную кнопку <strong>+ Create API Key</strong> в правом верхнем углу.
+                        <img src="images/claude-keys.png" alt="Claude: Create API Key" class="doc-shot">
+                    </li>
+                    <li>
+                        <strong>Заполните окно создания ключа точно как ниже:</strong>
+                        <ul style="margin: 8px 0 10px 18px; line-height: 1.7;">
+                            <li><strong>Name:</strong> любое название (например, <code>Claude</code>).</li>
+                            <li><strong>Group:</strong> обязательно выберите <strong><code>Claude Uptime 99%</code></strong> (API Claude High Speed).</li>
+                            <li><strong>Quota Limit:</strong> оставьте <strong>пустым</strong> (или <code>0</code> = без искусственного лимита, ключ тратит весь ваш баланс).</li>
+                            <li>Переключатели <strong>Custom Key</strong>, <strong>IP Restrictions</strong>, <strong>Rate Limit</strong> и <strong>Expiration</strong> оставьте <strong>ВЫКЛЮЧЕННЫМИ</strong>.</li>
+                        </ul>
+                        Нажмите <strong>Create</strong> и скопируйте готовый ключ, начинающийся на <code>sk-...</code>!
+                        <img src="images/claude-create.png" alt="Claude: Окно Create API Key" class="doc-shot doc-shot-narrow">
+                        <img src="images/claude-group.png" alt="Claude: Выбор группы Claude Uptime 99%" class="doc-shot doc-shot-narrow">
+                    </li>
+                </ol>
+            </section>
+
+            <section id="claude-code">
+                <div class="section-badge sb-cyan">● Подключение</div>
+                <div class="section-title">Подключение к Claude Code, Cursor и VS Code</div>
+                <p class="section-subtitle">Выберите ваш инструмент — все параметры проверены на живом шлюзе. Доступные модели:</p>
+
+                <div class="model-grid">
+                    <div class="model-card">
+                        <strong>Флагманы Opus</strong>
+                        <code>claude-opus-5-5</code><br>
+                        <code>claude-opus-4-8</code> / <code>claude-opus-4-7</code>
+                        <p>Сложная архитектура, глубокий рефакторинг и самые трудные задачи.</p>
+                    </div>
+                    <div class="model-card">
+                        <strong>Универсальные Sonnet</strong>
+                        <code>claude-sonnet-5</code><br>
+                        <code>claude-sonnet-4-6</code> / <code>claude-sonnet-4-5</code>
+                        <p>Оптимальный баланс качества, скорости и бережного расхода баланса на каждый день.</p>
+                    </div>
+                    <div class="model-card">
+                        <strong>Быстрая Haiku</strong>
+                        <code>claude-haiku-4-5</code>
+                        <p>Мгновенные ответы, мелкие правки и рутинные запросы с минимальным расходом.</p>
+                    </div>
+                </div>
+
+                <div class="tabs" style="margin-top: 16px;">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="switchTab(this, 'tab-cc-cli')">Claude Code (CLI)</button>
+                        <button class="tab-btn" onclick="switchTab(this, 'tab-cc-cline')">VS Code (Cline / Roo)</button>
+                        <button class="tab-btn" onclick="switchTab(this, 'tab-cc-cursor')">Cursor / OpenAI API</button>
+                    </div>
+
+                    <div class="tab-content active" id="tab-cc-cli">
+                        <p style="margin-bottom: 10px;">Установите <strong>Claude Code</strong> (<code>npm install -g @anthropic-ai/claude-code</code>) и задайте две переменные окружения перед запуском:</p>
+                        <div class="code-box">
+                            <div class="code-box-head">
+                                <span class="code-box-lang">Windows (PowerShell)</span>
+                                <button type="button" class="copy-code-btn" onclick="copyCodeBlock(this)">Копировать</button>
+                            </div>
+                            <pre>$env:ANTHROPIC_BASE_URL="https://api.mwapi.dev"
+$env:ANTHROPIC_AUTH_TOKEN="ВАШ_КЛЮЧ_sk-..."
+claude</pre>
+                        </div>
+                        <div class="code-box">
+                            <div class="code-box-head">
+                                <span class="code-box-lang">macOS / Linux (bash / zsh)</span>
+                                <button type="button" class="copy-code-btn" onclick="copyCodeBlock(this)">Копировать</button>
+                            </div>
+                            <pre>export ANTHROPIC_BASE_URL="https://api.mwapi.dev"
+export ANTHROPIC_AUTH_TOKEN="ВАШ_КЛЮЧ_sk-..."
+claude</pre>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-cc-cline">
+                        <ol style="padding-left: 20px; line-height: 1.8;">
+                            <li>Установите расширение <strong>Cline</strong> или <strong>Roo Code</strong> в VS Code.</li>
+                            <li>Откройте настройки расширения и выберите <strong>API Provider: <code>Anthropic</code></strong>.</li>
+                            <li>Включите <strong>Use custom base URL</strong> и вставьте:
+                                <div class="code-box">
+                                    <div class="code-box-head">
+                                        <span class="code-box-lang">Anthropic Base URL</span>
+                                        <button type="button" class="copy-code-btn" onclick="copyCodeBlock(this)">Копировать</button>
+                                    </div>
+                                    <pre>https://api.mwapi.dev</pre>
+                                </div>
+                            </li>
+                            <li>В поле <strong>Anthropic API Key</strong> вставьте ваш ключ <code>sk-...</code>.</li>
+                            <li>Выберите модель (например, <code>claude-sonnet-4-6</code> или <code>claude-opus-4-8</code>) и сохраните.</li>
+                        </ol>
+                    </div>
+
+                    <div class="tab-content" id="tab-cc-cursor">
+                        <ol style="padding-left: 20px; line-height: 1.8;">
+                            <li>Откройте <strong>Cursor Settings → Models</strong>.</li>
+                            <li>Включите <strong>OpenAI API Key</strong> и раскройте <strong>Override OpenAI Base URL</strong>.</li>
+                            <li>Укажите Base URL:
+                                <div class="code-box">
+                                    <div class="code-box-head">
+                                        <span class="code-box-lang">OpenAI-compatible Base URL</span>
+                                        <button type="button" class="copy-code-btn" onclick="copyCodeBlock(this)">Копировать</button>
+                                    </div>
+                                    <pre>https://api.mwapi.dev/v1</pre>
+                                </div>
+                            </li>
+                            <li>Вставьте ваш ключ <code>sk-...</code> и добавьте нужные модели (<code>claude-sonnet-5</code>, <code>claude-opus-5-5</code> и др.).</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <section id="claude-balance">
+                <div class="section-badge sb-orange">● Баланс и советы</div>
+                <div class="section-title">Канал Claude Uptime 99%, экономия и проверка остатка</div>
+
+                <div class="callout callout-info" style="margin-top: 16px;">
+                    <div class="callout-title">Особенности канала Claude Uptime 99% и расхода баланса</div>
+                    <p>Ваш ключ работает через выделенный высокоскоростной шлюз <strong>Claude Uptime 99% (API Claude High Speed)</strong> со стабильным аптаймом без блокировок аккаунта. На стороне API-провайдера <code>api.mwapi.dev</code> для этого выделенного канала применяется встроенный шлюзовой коэффициент биллинга (отображается в настройках группы как <code>7x rate</code> — внутренняя тарификация самого провайдера).</p>
+                    <p style="margin-top: 8px;">Даже с учётом шлюзовой тарификации стоимость работы через наш пакет получается в <strong>2–4 раза выгоднее официального API Anthropic</strong> и полностью избавляет от зарубежных карт и риска бана.</p>
+                </div>
+
+                <div class="callout callout-accent" style="margin-top: 14px;">
+                    <div class="callout-title">3 правила, как растянуть баланс на максимум</div>
+                    <ul style="margin: 8px 0 0 18px; line-height: 1.75;">
+                        <li><strong>Подключайте через провайдера Anthropic</strong> (<code>https://api.mwapi.dev</code>) — так не тратятся лишние служебные токены сторонних обёрток.</li>
+                        <li><strong>Выбирайте модель под задачу:</strong> для повседневного кода используйте <strong>Sonnet</strong> или <strong>Haiku</strong>, а <strong>Opus</strong> включайте там, где действительно нужна максимальная глубина.</li>
+                        <li><strong>Начинайте новый чат под новую задачу:</strong> в API каждый новый запрос в длинной ветке переотправляет всю историю переписки. Короткие тематические сессии экономят до 70% баланса.</li>
+                    </ul>
+                </div>
+
+                <div class="faq-item" style="margin-top: 18px;">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span>
+                        Как проверить оставшийся баланс и детализацию запросов?
+                        <span class="faq-chevron">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        Откройте вкладку <strong>Dashboard</strong> или <strong>Usage</strong> в личном кабинете на <a href="https://api.mwapi.dev/" target="_blank" rel="noopener noreferrer" style="color: var(--blue);">api.mwapi.dev</a>, либо проверьте созданный ключ напрямую на странице <a href="https://api.mwapi.dev/reseller" target="_blank" rel="noopener noreferrer" style="color: var(--blue);">api.mwapi.dev/reseller</a>.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+                        Сколько действует активированный баланс?
+                        <span class="faq-chevron">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        Баланс действует <strong>30 дней</strong> с момента активации кода на сайте. По истечении 30 дней или при исчерпании лимита можно купить новый код в боте и активировать его на этот же аккаунт <code>api.mwapi.dev</code> — даже ключ <code>sk-...</code> перенастраивать не придётся.
+                    </div>
+                </div>
+            </section>
+        </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             PANEL 4: CAPCUT PRO (1 МЕСЯЦ)
+             ═══════════════════════════════════════════ -->
+        <div class="service-panel" data-service-panel="capcut">
+        <div class="content-inner">
+            <div class="hero" id="capcut-start">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    CapCut Pro • До 30 дней + 650 AI-кредитов
+                </div>
+                <h1>Вход в CapCut Pro<br>и доступ к почте Outlook</h1>
+                <p class="hero-description">
+                    Инструкция по входу в готовый аккаунт <strong>CapCut Pro</strong>, настройке доступа из РФ и работе с почтой Outlook, если сервис запросит код подтверждения.
+                </p>
+
+                <div class="quick-nav">
+                    <a href="#capcut-login" class="quick-nav-card">
+                        <div class="quick-nav-icon qni-login">
+                            <svg viewBox="0 0 24 24"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg>
+                        </div>
+                        <div class="quick-nav-text">
+                            <strong>Вход в аккаунт</strong>
+                            <span>Веб-версия и приложение</span>
+                        </div>
+                    </a>
+                    <a href="#capcut-outlook" class="quick-nav-card">
+                        <div class="quick-nav-icon qni-overview">
+                            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        </div>
+                        <div class="quick-nav-text">
+                            <strong>Почта Outlook</strong>
+                            <span>Если нужен код входа</span>
+                        </div>
+                    </a>
+                    <a href="#capcut-tips" class="quick-nav-card">
+                        <div class="quick-nav-icon qni-faq">
+                            <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                        </div>
+                        <div class="quick-nav-text">
+                            <strong>650 AI-кредитов и FAQ</strong>
+                            <span>Экспорт и советы</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="callout callout-info" style="margin-top: 22px;">
+                    <div class="callout-title">Важно: доступ из РФ (VPN или прокси)</div>
+                    <p>CapCut ограничивает работу с российских IP-адресов:</p>
+                    <ul style="margin: 8px 0 0 18px; line-height: 1.7;">
+                        <li>Для <strong>веб-версии в браузере</strong> (<code>capcut.com</code>) подойдёт либо свой стабильный VPN, либо наши прокси через расширение <strong>Zero Omega</strong>.</li>
+                        <li>Для <strong>десктопного приложения CapCut на ПК</strong> включите системный VPN либо настройте наши прокси <strong>на весь ПК через ProxyBridge</strong>.</li>
+                    </ul>
+                    <button type="button" class="jump-proxy-btn" onclick="openServiceSection('google', 'proxy-pc')">🌐 Открыть настройку наших прокси (Zero Omega / ProxyBridge) →</button>
+                </div>
+            </div>
+
+            <section id="capcut-login">
+                <div class="section-badge sb-cyan">● Вход</div>
+                <div class="section-title">Вход в аккаунт CapCut Pro</div>
+                <p class="section-subtitle">Бот выдаст 3 строки: <strong>Email</strong>, <strong>Пароль CapCut</strong> и <strong>Пароль от почты (Outlook)</strong>. Для входа в сам CapCut используйте первые две строки.</p>
+
+                <ol style="margin-top: 18px; display: flex; flex-direction: column; gap: 22px; padding-left: 20px;">
+                    <li>
+                        <strong>Откройте <a href="https://www.capcut.com/" target="_blank" rel="noopener noreferrer" style="color: var(--blue);">capcut.com</a></strong> (с включённым VPN или прокси) и нажмите <strong>Попробовать веб-версию</strong> в правом верхнем углу (либо откройте установленное приложение CapCut на ПК/телефоне и нажмите <em>Sign in</em>).
+                        <img src="images/capcut-1.jpg" alt="CapCut: Попробовать веб-версию" class="doc-shot">
+                    </li>
+                    <li>
+                        <strong>Выберите вход по почте:</strong> в окне <em>Welcome to CapCut</em> нажмите <strong>Continue with email</strong>.
+                        <img src="images/capcut-2.jpg" alt="CapCut: Continue with email" class="doc-shot">
+                    </li>
+                    <li>
+                        <strong>Введите Email и Пароль CapCut</strong> (второе поле из бота) и нажмите <strong>Sign in</strong>.
+                        <img src="images/capcut-3.jpg" alt="CapCut: Ввод пароля CapCut" class="doc-shot doc-shot-narrow">
+                    </li>
+                </ol>
+
+                <p style="margin-top: 20px; color: var(--green);">✅ <strong>Готово!</strong> После авторизации статус <strong>Pro</strong> и баланс <strong>650 AI-кредитов</strong> активируются автоматически.</p>
+            </section>
+
+            <section id="capcut-outlook">
+                <div class="section-badge sb-emerald">● Почта</div>
+                <div class="section-title">Как войти в почту Outlook (для кода подтверждения)</div>
+                <p class="section-subtitle">Иногда при входе с нового устройства CapCut присылает одноразовый 6-значный код на почту. У вас есть доступ к этому почтовому ящику:</p>
+
+                <ol style="margin-top: 16px; padding-left: 20px; display: flex; flex-direction: column; gap: 10px;">
+                    <li>Перейдите на сайт почты <a href="https://outlook.live.com/" target="_blank" rel="noopener noreferrer" style="color: var(--blue);"><strong>outlook.live.com</strong></a> и нажмите <strong>Войти (Sign in)</strong>.</li>
+                    <li>Введите <strong>Email</strong> из сообщения бота (первое поле) и нажмите <strong>Далее</strong>.</li>
+                    <li>Введите <strong>Пароль от почты (Outlook)</strong> — это <strong>третье</strong> поле из данных в боте <em>(он отличается от пароля самого CapCut)</em>.</li>
+                    <li>Если Microsoft предложит добавить резервный способ входа — нажмите <em>Пропустить / Skip for now</em> (или <em>Нет / No</em> на окне «Не выходить из системы»).</li>
+                    <li>Откройте папку <strong>Входящие (Inbox)</strong> или <strong>Нежелательная почта (Junk)</strong>, скопируйте код от CapCut и вставьте на странице входа.</li>
+                </ol>
+
+                <div class="callout callout-warning" style="margin-top: 16px;">
+                    <div class="callout-title">Рекомендация по безопасности</div>
+                    <p>Не меняйте пароль и настройки безопасности в самом ящике Outlook, чтобы Microsoft не заблокировал его из-за подозрительной активности. Используйте почту только для получения кодов CapCut.</p>
+                </div>
+            </section>
+
+            <section id="capcut-tips">
+                <div class="section-badge sb-cyan">● Возможности и FAQ</div>
+                <div class="section-title">650 AI-кредитов, экспорт и частые вопросы</div>
+
+                <div class="faq-item" style="margin-top: 14px;">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+                        Сколько действует подписка CapCut Pro?
+                        <span class="faq-chevron">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        Подписка действует <strong>до 30 дней</strong> с момента получения (как правило, 24–30 дней в зависимости от даты активации партии) без автопродления. Готовые проекты рекомендуем сохранять локально на устройство.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span>
+                        Что дают 650 AI-кредитов и как убрать плашку AI-генерации?
+                        <span class="faq-chevron">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <strong>650 AI-кредитов</strong> можно тратить на встроенные нейроинструменты CapCut (AI-видео, AI-аватары, генерация изображений и эффектов). При обычном монтаже экспорт в 4K идёт полностью без водяного знака. Если на сгенерированном AI-ролике появляется маленькая угловая метка, достаточно закинуть ролик на таймлайн и слегка обрезать край инструментом <strong>Crop (Кадрирование)</strong>.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span class="faq-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg></span>
+                        Почему в приложении CapCut на ПК не грузятся Pro-эффекты?
+                        <span class="faq-chevron">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        Если вы настроили прокси только в браузере (Zero Omega), то приложение на рабочем столе всё ещё ходит через ваш российский IP. Включите системный VPN либо переключите наши прокси в режим <strong>«На весь ПК (ProxyBridge)»</strong> — и все эффекты загрузятся мгновенно.
+                    </div>
+                </div>
+            </section>
+        </div>
         </div>
 
         <footer class="footer">
-            <p>Veo3 Shop • Инструкция по входу в аккаунт и использованию подписки</p>
+            <p>Veo3 Shop • Документация по Google AI Pro, ChatGPT, Claude AI (API) и CapCut Pro</p>
             <p>Если остались вопросы — <a href="https://t.me/VEO3SHOP_bot_support" target="_blank" rel="noopener noreferrer">напишите в поддержку</a></p>
         </footer>
     </main>
@@ -2099,20 +2928,258 @@
         scrollTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
         let isScrollingFromNav = false;
+        let currentService = 'google';
+        const IS_FILE_PROTO = (window.location.protocol === 'file:');
+
+        // Clean path routing table (supports /Gemini, /Gemini/security/block, /ChatGPT/credits, /Claude, /CapCut/outlook, etc.)
+        const ANCHOR_TO_PATH = {
+            // Google AI Pro (Gemini)
+            'start': '/Gemini',
+            'proxy-pc': '/Gemini/proxy/pc',
+            'proxy-ios': '/Gemini/proxy/ios',
+            'proxy-android': '/Gemini/proxy/android',
+            'proxy-faq': '/Gemini/proxy/faq',
+            'login-data': '/Gemini/login/data',
+            '2fa': '/Gemini/login/2fa',
+            'login-qr': '/Gemini/login/qr',
+            'login-faq': '/Gemini/login/faq',
+            'ag-install': '/Gemini/antigravity/install',
+            'ag-verify': '/Gemini/antigravity/verify',
+            'ag-region': '/Gemini/antigravity/region',
+            'ag-error': '/Gemini/antigravity/error',
+            'pro-features': '/Gemini/overview/features',
+            'veo-flow': '/Gemini/overview/veo',
+            '590-videos': '/Gemini/overview/500',
+            'warmup': '/Gemini/security/warmup',
+            'account-block': '/Gemini/security/block',
+            'faq': '/Gemini/faq',
+            // ChatGPT
+            'gpt-start': '/ChatGPT',
+            'gpt-login': '/ChatGPT/login',
+            'gpt-2fa': '/ChatGPT/2fa',
+            'gpt-codex': '/ChatGPT/credits',
+            'gpt-faq': '/ChatGPT/faq',
+            // Claude AI (API)
+            'claude-start': '/Claude',
+            'claude-activate': '/Claude/activate',
+            'claude-code': '/Claude/setup',
+            'claude-balance': '/Claude/balance',
+            // CapCut Pro
+            'capcut-start': '/CapCut',
+            'capcut-login': '/CapCut/login',
+            'capcut-outlook': '/CapCut/outlook',
+            'capcut-tips': '/CapCut/faq',
+        };
+
+        const SERVICE_DEFAULT_PATH = {
+            'google': '/Gemini',
+            'chatgpt': '/ChatGPT',
+            'claude': '/Claude',
+            'capcut': '/CapCut',
+        };
+
+        // Case-insensitive lookup including shorthand section paths
+        const PATH_TO_TARGET = {};
+        Object.keys(ANCHOR_TO_PATH).forEach(anchor => {
+            const p = ANCHOR_TO_PATH[anchor].toLowerCase();
+            let svc = 'google';
+            if (p.startsWith('/chatgpt')) svc = 'chatgpt';
+            else if (p.startsWith('/claude')) svc = 'claude';
+            else if (p.startsWith('/capcut')) svc = 'capcut';
+            PATH_TO_TARGET[p] = { svc, anchor };
+        });
+        // Friendly shorthand aliases
+        Object.assign(PATH_TO_TARGET, {
+            '/': { svc: 'google', anchor: null },
+            '/google': { svc: 'google', anchor: null },
+            '/gemini': { svc: 'google', anchor: null },
+            '/gemini/proxy': { svc: 'google', anchor: 'proxy-pc' },
+            '/gemini/login': { svc: 'google', anchor: 'login-data' },
+            '/gemini/antigravity': { svc: 'google', anchor: 'ag-install' },
+            '/gemini/overview': { svc: 'google', anchor: 'pro-features' },
+            '/gemini/security': { svc: 'google', anchor: 'warmup' },
+            '/chatgpt': { svc: 'chatgpt', anchor: null },
+            '/chatgpt/codex': { svc: 'chatgpt', anchor: 'gpt-codex' },
+            '/claude': { svc: 'claude', anchor: null },
+            '/claude/code': { svc: 'claude', anchor: 'claude-code' },
+            '/claude/faq': { svc: 'claude', anchor: 'claude-balance' },
+            '/capcut': { svc: 'capcut', anchor: null },
+            '/capcut/tips': { svc: 'capcut', anchor: 'capcut-tips' },
+        });
+
+        function updateCleanUrl(svc, anchorId) {
+            const cleanPath = (anchorId && ANCHOR_TO_PATH[anchorId]) || SERVICE_DEFAULT_PATH[svc] || '/Gemini';
+            if (IS_FILE_PROTO) {
+                const h = '#' + (anchorId || svc);
+                if (window.location.hash !== h) {
+                    try { history.replaceState(null, '', h); } catch (e) {}
+                }
+                return;
+            }
+            if (window.location.pathname !== cleanPath || window.location.search || window.location.hash) {
+                try { history.replaceState(null, '', cleanPath); } catch (e) {}
+            }
+        }
+
+        function copyCodeBlock(btn) {
+            const box = btn.closest('.code-box');
+            const pre = box ? box.querySelector('pre') : null;
+            if (!pre) return;
+            const text = pre.innerText;
+            const orig = btn.textContent;
+            const done = () => {
+                btn.textContent = '✅ Скопировано';
+                setTimeout(() => { btn.textContent = orig; }, 2000);
+            };
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(done).catch(() => {
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    done();
+                });
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                done();
+            }
+        }
+
+        function activateSidebarItem(svc, anchorId) {
+            const activeNav = document.querySelector(`.service-nav[data-service-nav="${svc}"]`);
+            if (!activeNav || !anchorId) return;
+            const navLink = activeNav.querySelector(`.nav-link[data-anchor="${anchorId}"]`);
+            if (navLink) {
+                activeNav.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                navLink.classList.add('active');
+                const group = navLink.closest('.nav-group');
+                if (group) {
+                    activeNav.querySelectorAll('.nav-group').forEach(g => { if (g !== group) g.classList.remove('open'); });
+                    group.classList.add('open');
+                }
+            }
+        }
+
+        function switchService(svc, targetAnchor, skipUrlUpdate) {
+            const valid = ['google', 'chatgpt', 'claude', 'capcut'];
+            if (!valid.includes(svc)) svc = 'google';
+            currentService = svc;
+
+            document.querySelectorAll('.svc-pill').forEach(p => {
+                p.classList.toggle('active', p.dataset.service === svc);
+            });
+            document.querySelectorAll('.service-panel').forEach(panel => {
+                panel.classList.toggle('active', panel.dataset.servicePanel === svc);
+            });
+            document.querySelectorAll('.service-nav').forEach(nav => {
+                nav.classList.toggle('active', nav.dataset.serviceNav === svc);
+            });
+
+            if (!skipUrlUpdate) {
+                updateCleanUrl(svc, targetAnchor);
+            }
+
+            if (targetAnchor) {
+                activateSidebarItem(svc, targetAnchor);
+                setTimeout(() => {
+                    const el = document.getElementById(targetAnchor);
+                    if (el) {
+                        isScrollingFromNav = true;
+                        el.scrollIntoView({ behavior: 'smooth' });
+                        setTimeout(() => { isScrollingFromNav = false; }, 900);
+                    }
+                }, 40);
+            } else {
+                const firstAnchor = { google: 'start', chatgpt: 'gpt-start', claude: 'claude-start', capcut: 'capcut-start' }[svc];
+                activateSidebarItem(svc, firstAnchor);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            if (window.innerWidth <= 768) {
+                mobileToggle.classList.remove('active');
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            }
+        }
+
+        function openServiceSection(svc, anchorId) {
+            switchService(svc, anchorId, false);
+        }
+
+        function resolveHashOnly() {
+            const rawHash = (window.location.hash || '').replace(/^#/, '').trim().toLowerCase();
+            if (!rawHash) return false;
+            if (['google', 'gemini'].includes(rawHash)) { switchService('google', null, false); return true; }
+            if (['chatgpt', 'claude', 'capcut'].includes(rawHash)) { switchService(rawHash, null, false); return true; }
+            const target = document.getElementById(rawHash);
+            if (target) {
+                const panel = target.closest('.service-panel');
+                if (panel && panel.dataset.servicePanel) {
+                    switchService(panel.dataset.servicePanel, rawHash, false);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function resolveInitialRoute() {
+            // 1. Check ?r= redirect from 404.html (GitHub Pages SPA clean URL)
+            const params = new URLSearchParams(window.location.search);
+            let routePath = params.get('r') || '';
+            if (!routePath) {
+                try {
+                    const stored = sessionStorage.getItem('veo3_spa_route');
+                    if (stored) {
+                        sessionStorage.removeItem('veo3_spa_route');
+                        routePath = stored.split('?')[0].split('#')[0];
+                    }
+                } catch (e) {}
+            }
+            if (!routePath && !IS_FILE_PROTO && window.location.pathname && window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
+                routePath = window.location.pathname;
+            }
+
+            if (routePath) {
+                const norm = ('/' + routePath.replace(/^\/+|\/+$/g, '')).toLowerCase();
+                const hit = PATH_TO_TARGET[norm];
+                if (hit) {
+                    switchService(hit.svc, hit.anchor, false);
+                    return;
+                }
+                if (norm.startsWith('/chatgpt')) { switchService('chatgpt', null, false); return; }
+                if (norm.startsWith('/claude')) { switchService('claude', null, false); return; }
+                if (norm.startsWith('/capcut')) { switchService('capcut', null, false); return; }
+                if (norm.startsWith('/gemini') || norm.startsWith('/google')) { switchService('google', null, false); return; }
+            }
+
+            // 2. Fallback to legacy #hash links (#chatgpt, #claude, #capcut, #account-block, etc.)
+            resolveHashOnly();
+        }
+
+        // Convert sidebar & quick-nav hrefs to clean copyable paths (while preserving data-anchor)
+        document.querySelectorAll('.nav-link[href^="#"], .quick-nav-card[href^="#"]').forEach(el => {
+            const anchorId = el.getAttribute('href').substring(1);
+            el.dataset.anchor = anchorId;
+            if (!IS_FILE_PROTO && ANCHOR_TO_PATH[anchorId]) {
+                el.setAttribute('href', ANCHOR_TO_PATH[anchorId]);
+            }
+        });
 
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 isScrollingFromNav = true;
-                const targetId = this.getAttribute('href').substring(1);
+                const targetId = this.dataset.anchor || (this.getAttribute('href') || '').replace(/^#/, '');
                 const target = document.getElementById(targetId);
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-                const group = this.closest('.nav-group');
-                if (group) {
-                    document.querySelectorAll('.nav-group').forEach(g => { if (g !== group) g.classList.remove('open'); });
-                    group.classList.add('open');
-                }
+                activateSidebarItem(currentService, targetId);
+                updateCleanUrl(currentService, targetId);
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth' });
                     setTimeout(() => { isScrollingFromNav = false; }, 1000);
@@ -2125,23 +3192,14 @@
             });
         });
 
-        document.querySelectorAll('.quick-nav-card[href^="#"]').forEach(card => {
+        document.querySelectorAll('.quick-nav-card[data-anchor]').forEach(card => {
             card.addEventListener('click', function(e) {
                 e.preventDefault();
                 isScrollingFromNav = true;
-                const targetId = this.getAttribute('href').substring(1);
+                const targetId = this.dataset.anchor;
                 const target = document.getElementById(targetId);
-                
-                // Close other groups and open target's group
-                const navLink = document.querySelector(`.nav-link[href="#${targetId}"]`);
-                if (navLink) {
-                    const group = navLink.closest('.nav-group');
-                    if (group) {
-                        document.querySelectorAll('.nav-group').forEach(g => { if (g !== group) g.classList.remove('open'); });
-                        group.classList.add('open');
-                    }
-                }
-
+                activateSidebarItem(currentService, targetId);
+                updateCleanUrl(currentService, targetId);
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth' });
                     setTimeout(() => { isScrollingFromNav = false; }, 1000);
@@ -2149,54 +3207,48 @@
             });
         });
 
-        // Robust ScrollSpy Logic
-        const sections = Array.from(document.querySelectorAll('section[id], div#start'));
+        // Robust Active-Panel ScrollSpy Logic (updates active nav & clean URL bar smoothly)
         window.addEventListener('scroll', () => {
             if (isScrollingFromNav) return;
-            
+            const activePanel = document.querySelector(`.service-panel[data-service-panel="${currentService}"]`);
+            const activeNav = document.querySelector(`.service-nav[data-service-nav="${currentService}"]`);
+            if (!activePanel || !activeNav) return;
+
+            const sections = Array.from(activePanel.querySelectorAll('section[id], .hero[id]'));
+            if (!sections.length) return;
+
             let currentId = '';
             sections.forEach(sec => {
                 const rect = sec.getBoundingClientRect();
-                if (rect.top <= 200) {
-                    currentId = sec.id;
-                }
+                if (rect.top <= 220) currentId = sec.id;
             });
-            
-            // Check if user is at the absolute top of the page
-            if (window.scrollY < 50) {
-                currentId = sections[0].id;
-            }
-            // Check if user is at the absolute bottom of the page
-            else if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
-                currentId = sections[sections.length - 1].id;
-            }
-            
+            if (window.scrollY < 50) currentId = sections[0].id;
+            else if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) currentId = sections[sections.length - 1].id;
+
             if (currentId) {
-                const navLink = document.querySelector(`.nav-link[href="#${currentId}"]`);
+                const navLink = activeNav.querySelector(`.nav-link[data-anchor="${currentId}"]`);
                 if (navLink && !navLink.classList.contains('active')) {
-                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                    navLink.classList.add('active');
-                    
-                    const group = navLink.closest('.nav-group');
-                    if (group) {
-                        document.querySelectorAll('.nav-group').forEach(g => { if (g !== group) g.classList.remove('open'); });
-                        group.classList.add('open');
-                    }
+                    activateSidebarItem(currentService, currentId);
+                    updateCleanUrl(currentService, currentId);
                 }
             }
         }, { passive: true });
 
-        // Lightbox Logic
+        // Lightbox Logic across all service panels
         document.body.insertAdjacentHTML('beforeend', '<div class="lightbox" id="lightbox"><button class="lightbox-close" aria-label="Закрыть">✕</button><img src="" id="lightboxImg"></div>');
         const lightbox = document.getElementById('lightbox');
         lightbox.addEventListener('click', (e) => { if (e.target !== document.getElementById('lightboxImg')) lightbox.classList.remove('active'); });
-        
+
         document.querySelectorAll('.content-inner img').forEach(img => {
             img.addEventListener('click', () => {
                 document.getElementById('lightboxImg').src = img.src;
                 lightbox.classList.add('active');
             });
         });
+
+        window.addEventListener('hashchange', resolveHashOnly);
+        window.addEventListener('popstate', resolveInitialRoute);
+        resolveInitialRoute();
     </script>
 </body>
 </html>

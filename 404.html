@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Veo3 Shop — Документация</title>
+    <script>
+        (function () {
+            var p = window.location.pathname || '/';
+            var h = window.location.hash || '';
+            try { sessionStorage.setItem('veo3_spa_route', p + h); } catch (e) {}
+            window.location.replace('/?r=' + encodeURIComponent(p) + h);
+        })();
+    </script>
+</head>
+<body style="background:#060a14;color:#e4e8f4;font-family:sans-serif;padding:40px;text-align:center;">
+    Переход в документацию Veo3 Shop...
+</body>
+</html>
